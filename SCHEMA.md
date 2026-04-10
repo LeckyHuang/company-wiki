@@ -192,3 +192,60 @@ sources: [关联的 sources 文件名]
 3. 人工确认框架后，LLM 协助填充各章节内容
 4. 方案完成后，将定稿文件放入 sources/proposals/
 5. 执行 ingest，将本次方案的新知识回写 wiki
+
+---
+
+## 七、Obsidian 集成规范
+
+### 7.1 Vault 设置
+
+将整个 `company-wiki/` 目录作为 Obsidian Vault 打开。
+
+**推荐插件**（社区插件 → 搜索安装）：
+- **Dataview** — 驱动 `wiki/_dashboard.md` 的动态查询
+- **Graph Analysis**（可选）— 增强知识图谱分析
+
+### 7.2 Wikilink 约定
+
+**wiki 页面之间的所有内部引用，必须使用 Obsidian wikilink 格式**：
+
+```markdown
+✅ 正确：见 [[industries/通信行业]] 的痛点分析
+✅ 正确：适用模块参考 [[modules/智慧大屏]]
+❌ 禁止：见 [通信行业](industries/通信行业.md) 的痛点分析
+```
+
+- wikilink 路径从 vault 根目录（`company-wiki/`）开始，省略 `.md` 后缀
+- 可加 `#章节锚点`：`[[modules/智慧大屏#核心功能]]`
+- 显示别名用 `|`：`[[industries/通信行业|通信行业]]`
+
+> **为什么**：wikilink 格式让 Obsidian Graph View 能渲染出真实的知识连接网络，孤立节点一眼可见。
+
+### 7.3 四大操作与 Obsidian 的关系
+
+| 操作 | Obsidian 用途 |
+|---|---|
+| Ingest | 完成后执行 Validate，生成 Canvas 可视化验证 |
+| Validate | 生成 `.canvas` 文件，在 Obsidian 中打开确认知识提取是否正确 |
+| Query | 无需 Obsidian |
+| Lint | 完成后可在 `_dashboard.md` 中查看全局状态 |
+
+### 7.4 Canvas 文件规范
+
+- 存放位置：`wiki/canvases/`
+- 命名：`YYYY-MM-DD_[源文件名].canvas`（例：`2025-08-01_001_湛江电信升级规划方案.canvas`）
+- 每次 Ingest 对应一个 Canvas，不覆盖历史
+- Canvas 结构（固定布局）：
+  ```
+  左侧：源文件节点（红色）
+    ↓ 流向
+  中部：本次新建页面（绿色分组）
+  中部：本次更新页面（蓝色分组）
+    ↓ 交叉引用关系
+  右侧：被关联的已有页面（灰色，仅做参考展示）
+  ```
+
+### 7.5 Dashboard 仪表盘
+
+`wiki/_dashboard.md` 是全局知识库健康视图，需要 Dataview 插件驱动。
+在 Obsidian 中打开该文件，可实时查看所有页面状态。

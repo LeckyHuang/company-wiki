@@ -20,12 +20,20 @@ cd company-wiki
 # 参考 prompts/ingest.md 执行第一次摄入
 ```
 
-### 三个核心操作
+### 四大操作
 | 操作 | 用途 | 提示词 |
 |---|---|---|
 | **Ingest** | 将新材料摄入 wiki | `prompts/ingest.md` |
+| **Validate** | 可视化验证 Ingest 结果（Obsidian Canvas） | `prompts/validate.md` |
 | **Query** | 为新方案生产查询素材 | `prompts/query.md` |
 | **Lint** | 健康检查（建议每月一次） | `prompts/lint.md` |
+
+### Obsidian 可视化验证
+
+1. 用 Obsidian 打开整个 `company-wiki/` 目录作为 Vault
+2. 安装社区插件：**Dataview**
+3. 打开 `wiki/_dashboard.md` 查看全局知识库状态
+4. 每次 Ingest 后，执行 Validate 生成 `wiki/canvases/` 下的 Canvas 文件，在 Obsidian 中打开做人工确认
 
 ## 目录结构
 ```
